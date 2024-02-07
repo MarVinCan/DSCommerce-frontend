@@ -7,10 +7,14 @@ import { Link } from "react-router-dom";
 export default function Cart() {
   const [cart, setCart] = useState<OrderDTO>(cartService.getCart());
 
-  function handleClearClick(){
+  function handleClearClick() {
     cartService.clearCart();
     setCart(cartService.getCart());
-  } 
+  }
+  function handleIncriseItem(productId: number) {
+    cartService.incriseItem(productId);
+    setCart(cartService.getCart());
+  }
 
   return (
     <main>
@@ -33,7 +37,12 @@ export default function Cart() {
                     <div className="dsc-cart-item-quantity-container">
                       <div className="dsc-cart-item-quantity-btn">-</div>
                       <p>{item.quantity}</p>
-                      <div className="dsc-cart-item-quantity-btn">+</div>
+                      <div
+                        onClick={() => handleIncriseItem(item.productId)}
+                        className="dsc-cart-item-quantity-btn"
+                      >
+                        +
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -57,7 +66,9 @@ export default function Cart() {
               Continuar comprando
             </div>{" "}
           </Link>
-          <div onClick={handleClearClick} className="dsc-btn dsc-btn-white">Limpar Carrinho</div>
+          <div onClick={handleClearClick} className="dsc-btn dsc-btn-white">
+            Limpar Carrinho
+          </div>
         </div>
       </section>
     </main>
