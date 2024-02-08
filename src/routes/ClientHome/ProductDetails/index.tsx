@@ -24,7 +24,7 @@ export default function ProductDetails() {
       .catch(() => {
         navGate("/");
       });
-  }, []);
+  }, [navGate, params.productId]);
 
   function handleBuyClick() {
     if(product){
