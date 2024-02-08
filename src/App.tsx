@@ -5,15 +5,15 @@ import ClientHome from "./routes/ClientHome";
 import Catalog from "./routes/ClientHome/Catalog";
 import Cart from "./routes/ClientHome/Cart";
 import { useState } from "react";
-import { ContextCartCout } from "./utils/context-card";
+import { ContextCartCount } from "./utils/context-card";
 
 export default function App() {
-  const [contextCartCout, setContextCartCout] = useState<number>(0);
+  const [contextCartCout, setContextCartCount] = useState<number>(0);
 
-  
+
 
   return (
-    <ContextCartCout.Provider value={{ contextCartCout, setContextCartCout }}>
+    <ContextCartCount.Provider value={{ contextCartCout, setContextCartCount }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<ClientHome />}>
@@ -28,6 +28,6 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
-    </ContextCartCout.Provider>
+    </ContextCartCount.Provider>
   );
 }

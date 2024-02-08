@@ -3,11 +3,11 @@ import { useContext, useState } from "react";
 import * as cartService from "../../../services/cart-service";
 import { OrderDTO } from "../../../models/order";
 import { Link } from "react-router-dom";
-import { ContextCartCout } from "../../../utils/context-card";
+import { ContextCartCount } from "../../../utils/context-card";
 
 export default function Cart() {
 
-  const {setContextCartCout} = useContext(ContextCartCout);
+  const {setContextCartCount} = useContext(ContextCartCount);
 
   const [cart, setCart] = useState<OrderDTO>(cartService.getCart());
 
@@ -28,7 +28,7 @@ export default function Cart() {
   function updateCart(){
     const newCart = cartService.getCart();
     setCart(newCart);
-    setContextCartCout(newCart.items.length);
+    setContextCartCount(newCart.items.length);
   }
 
   return (

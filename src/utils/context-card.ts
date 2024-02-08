@@ -1,11 +1,11 @@
 import { createContext } from "react";
 
 export type ContextCartCountType = {
-    contextCartCout: number;
-    setContextCartCount: (contextCartCout: number) => void;
+    contextCartCount: number;
+    setContextCartCount: (contextCartCount: number) => void;
 }
 
-export const ContextCartCout = createContext<ContextCartCountType>({
-    contextCartCout: 0,
+export const ContextCartCount = createContext<ContextCartCountType>({
+    contextCartCount: 0,
     setContextCartCount: () => {}
 })
