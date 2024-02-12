@@ -14,7 +14,7 @@ export default function Confirmation() {
     orderService.findByIdRequest(Number(params.orderId)).then((response) => {
       setOrder(response.data);
     });
-  }, []);
+  }, [params.orderId]);
 
   return (
     <main>
