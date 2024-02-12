@@ -30,7 +30,7 @@ export default function Catalog() {
         setProducts(products.concat(nextPage));
         setIsLastPage(response.data.last);
       });
-  }, [queryParams]);
+  }, [queryParams, products]);
 
   function handleSearch(searchText: string) {
     setProducts([]);
