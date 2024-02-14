@@ -58,14 +58,7 @@ export default function App() {
                 element={<PrivateRoute><Confirmation /></PrivateRoute> }
               />
             </Route>
-            <Route
-              path="/admin/"
-              element={
-                <PrivateRoute roles={["ROLE_ADMIN"]}>
-                  <Admin />
-                </PrivateRoute>
-              }
-            >
+            <Route path="/admin/" element={<PrivateRoute roles={["ROLE_ADMIN"]}><Admin /></PrivateRoute>}>
               <Route index element={<Navigate to="/admin/home" />} />
               <Route path="home" element={<AdminHome />} />
               <Route path="products" element={<ProductListing />} />
