@@ -4,13 +4,18 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import FormInput from "../../../components/FormInput";
 import * as forms from "../../../utils/forms";
+import * as categoryService from "../../../services/category-service";
 import * as productService from "../../../services/product-service";
 import FormTextArea from "../../../components/FormTextArea";
+import Select from "react-select";
+import { CategoryDTO } from "../../../models/category";
 
 export default function ProductForm() {
   const params = useParams();
 
   const isEditing = params.productId !== "created";
+
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
 
   const [formData, setFormData] = useState<any>({
     name: {
@@ -56,9 +61,15 @@ export default function ProductForm() {
   });
 
   useEffect(() => {
-    const result = forms.toDirty(formData, "price");
-    console.log(result);
+    categoryService.findAllRequest()
+      .then(Response=> {
+        setCategories(Response.data)
+      })
 
+  },[])
+
+
+  useEffect(() => {
     if (isEditing) {
       productService.findById(Number(params.productId)).then((response) => {
         const newFormData = forms.updateAll(formData, response.data);
@@ -76,7 +87,6 @@ export default function ProductForm() {
   function handleTurnDirty(name: string) {
     setFormData(forms.dirtyAndValidate(formData, name));
   }
-
   return (
     <main>
       <section id="product-form-section" className="dsc-container">
@@ -109,6 +119,14 @@ export default function ProductForm() {
                   onTurnDirty={handleTurnDirty}
                   className="dsc-form-control"
                 />
+              </div>
+              <div>
+              <Select 
+              options={categories}
+              isMulti
+              getOptionLabel={(obj) => obj.name}
+              getOptionValue={(obj) => String(obj.id)}
+               />
               </div>
               <div>
                 <FormTextArea
