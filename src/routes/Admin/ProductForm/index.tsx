@@ -5,13 +5,12 @@ import { useEffect, useState } from "react";
 import FormInput from "../../../components/FormInput";
 import * as forms from "../../../utils/forms";
 import * as productService from "../../../services/product-service";
+import FormTextArea from "../../../components/FormTextArea";
 
 export default function ProductForm() {
-
   const params = useParams();
 
-  const isEditing = params.productId !== 'created';
-
+  const isEditing = params.productId !== "created";
 
   const [formData, setFormData] = useState<any>({
     name: {
@@ -20,10 +19,10 @@ export default function ProductForm() {
       name: "name",
       type: "text",
       placeholder: "Nome",
-      validation: function(value: string){
-        return  /^.{3,80}$/.test(value);
+      validation: function (value: string) {
+        return /^.{3,80}$/.test(value);
       },
-      message: "Favor informar um nome de 3 a 80 caracteres"
+      message: "Favor informar um nome de 3 a 80 caracteres",
     },
     price: {
       value: "",
@@ -31,10 +30,10 @@ export default function ProductForm() {
       name: "price",
       type: "number",
       placeholder: "Preço",
-      validation: function(value: any){
+      validation: function (value: any) {
         return Number(value) > 0;
       },
-      message: "Favor inform um valor positivo"
+      message: "Favor inform um valor positivo",
     },
     imgUrl: {
       value: "",
@@ -43,31 +42,40 @@ export default function ProductForm() {
       type: "text",
       placeholder: "Imagem",
     },
+    description: {
+      value: "",
+      id: "description",
+      name: "description",
+      type: "text",
+      placeholder: "Descrição",
+      validation: function (value: string) {
+        return /^.{10,}$/.test(value);
+      },
+      message: "Descrição deve ter pelo menos 10 caracteres",
+    },
   });
 
-  
-
   useEffect(() => {
-
     const result = forms.toDirty(formData, "price");
     console.log(result);
 
-    if(isEditing) {
-      productService.findById(Number(params.productId))
-        .then(response => {
-          const newFormData = forms.updateAll(formData, response.data)
-          setFormData(newFormData); 
-        })
+    if (isEditing) {
+      productService.findById(Number(params.productId)).then((response) => {
+        const newFormData = forms.updateAll(formData, response.data);
+        setFormData(newFormData);
+      });
     }
-},[])
+  }, []);
 
   function handleInputChange(event: any) {
-    setFormData(forms.updateAndValidate(formData, event.target.name, event.target.value));
+    setFormData(
+      forms.updateAndValidate(formData, event.target.name, event.target.value)
+    );
   }
 
-  function handleTurnDirty(name: string){
-      setFormData(forms.dirtyAndValidate(formData,name));
-   }
+  function handleTurnDirty(name: string) {
+    setFormData(forms.dirtyAndValidate(formData, name));
+  }
 
   return (
     <main>
@@ -101,6 +109,17 @@ export default function ProductForm() {
                   onTurnDirty={handleTurnDirty}
                   className="dsc-form-control"
                 />
+              </div>
+              <div>
+                <FormTextArea
+                  {...formData.description}
+                  onChange={handleInputChange}
+                  onTurnDirty={handleTurnDirty}
+                  className="dsc-form-control dsc-textarea"
+                />
+                <div className="dsc-form-error">
+                  {formData.description.message}
+                </div>
               </div>
             </div>
 
