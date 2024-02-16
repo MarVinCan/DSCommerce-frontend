@@ -98,23 +98,25 @@ export default function ProductForm() {
     setFormData(forms.dirtyAndValidate(formData, name));
   }
 
-  function handleSubmit(event: any){
+  function handleSubmit(event: any) {
     event.preventDefault();
     const formDataValidated = forms.dirtyAndValidateAll(formData);
-    if(forms.hasAnyInvalid(formDataValidated)){
+    if (forms.hasAnyInvalid(formDataValidated)) {
       setFormData(formDataValidated);
       return;
     }
     const requestBody = forms.toValues(formData);
-    if (isEditing){
+    if (isEditing) {
       requestBody.id = params.productId;
     }
 
-    productService.updateRequest(requestBody)
-      .then(()=>{
-        navigte("/admin/products")
-      });
+    const request = isEditing
+      ? productService.updateRequest(requestBody)
+      : productService.insertRequest(requestBody);
 
+    request.then(() => {
+      navigte("/admin/products");
+    });
   }
   return (
     <main>
@@ -152,8 +154,8 @@ export default function ProductForm() {
               <div>
                 <FormSelect
                   {...formData.categories}
-                  className = "dsc-form-control dsc-form-select-container"
-                  styles = {selectStyles}
+                  className="dsc-form-control dsc-form-select-container"
+                  styles={selectStyles}
                   options={categories}
                   onChange={(obj: any) => {
                     const newFormData = forms.updateAndValidate(
@@ -168,7 +170,9 @@ export default function ProductForm() {
                   getOptionLabel={(obj: any) => obj.name}
                   getOptionValue={(obj: any) => String(obj.id)}
                 />
-                  <div className="dsc-form-error">{formData.categories.message}</div>
+                <div className="dsc-form-error">
+                  {formData.categories.message}
+                </div>
               </div>
               <div>
                 <FormTextArea
